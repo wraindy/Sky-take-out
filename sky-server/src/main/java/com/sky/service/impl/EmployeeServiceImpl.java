@@ -96,7 +96,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 清除当前线程的数据，防止内存泄漏
         BaseContext.removeCurrentId();
-        // todo 未做用户名重复校验
     }
 
 
