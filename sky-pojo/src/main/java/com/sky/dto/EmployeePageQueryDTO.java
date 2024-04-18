@@ -1,9 +1,10 @@
 package com.sky.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
-
+@ApiModel(description = "新增员工信息传递的数据模型")
 @Data
 public class EmployeePageQueryDTO implements Serializable {
 
