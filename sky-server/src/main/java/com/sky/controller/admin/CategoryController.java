@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -55,6 +56,13 @@ public class CategoryController {
     @ApiOperation("删除分类")
     public Result<String> deleteById(Long id) {
         categoryService.deleteById(id);
+        return Result.success();
+    }
+
+    @PostMapping
+    @ApiOperation("新增分类")
+    public Result save (@RequestBody CategoryDTO categoryDTO) {
+        categoryService.save(categoryDTO);
         return Result.success();
     }
 }
