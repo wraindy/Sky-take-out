@@ -95,6 +95,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.deleteById(id);
     }
 
+    /**
+     * 新增分类
+     * @param categoryDTO
+     */
     @Override
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
