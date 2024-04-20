@@ -67,6 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .updateUser(BaseContext.getCurrentId())
                 .build();
         categoryMapper.update(category);
+        BaseContext.removeCurrentId();
     }
 
     /**
