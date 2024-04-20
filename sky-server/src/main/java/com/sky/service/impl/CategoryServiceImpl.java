@@ -135,4 +135,9 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.update(category);
         BaseContext.removeCurrentId();
     }
+
+    @Override
+    public List<Category> list(Integer type) {
+        return categoryMapper.list(type);
+    }
 }
