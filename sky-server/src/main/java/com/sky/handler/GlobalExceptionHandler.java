@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 捕获SQL违反约束键一场
+     * 捕获SQL违反约束键异常
      * @param ex
      * @return
      */
