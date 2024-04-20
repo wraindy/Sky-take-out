@@ -122,4 +122,17 @@ public class EmployeeController {
         employeeService.startOrStop(status, id);
         return Result.success();
     }
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> getById(@PathVariable("id") Long id) {
+        // todo 防御性编程：用户可能不存在
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
 }
