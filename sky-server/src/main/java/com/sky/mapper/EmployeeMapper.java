@@ -28,4 +28,10 @@ public interface EmployeeMapper {
      * @return
      */
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 启用或停用员工账号,动态sql使用注解方式不太方便
+     * @param employee
+     */
+    void update(Employee employee);
 }

@@ -122,5 +122,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, records);
     }
 
+    /**
+     * 启用或停用员工账号
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // 为了提升update的复用性，我们可以将status和id封装成employee对象
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        // todo 防御性编程：参数校验：status只能是0或1；用户id必须存在
+        employeeMapper.update(employee);
+    }
+
 
 }
