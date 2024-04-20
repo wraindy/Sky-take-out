@@ -10,5 +10,10 @@ import com.sky.result.PageResult;
  * Notice
  **/
 public interface CategoryService {
+    /**
+     * 分页查询分类列表
+     * @param categoryPageQueryDTO
+     * @return
+     */
     PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 }
