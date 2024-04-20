@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @Author Wraindy
@@ -10,4 +11,11 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface SetMealMapper {
+    /**
+     * 根据分类id查询套餐数量
+     * @param id
+     * @return
+     */
+    @Select("select count(1) from setmeal where category_id = #{categoryId}")
+    Integer countByCategoryId(Long categoryId);
 }
