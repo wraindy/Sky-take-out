@@ -36,4 +36,10 @@ public interface CategoryService {
      * @param categoryDTO
      */
     void save(CategoryDTO categoryDTO);
+
+    /**
+     * 更新分类信息
+     * @param categoryDTO
+     */
+    void update(CategoryDTO categoryDTO);
 }

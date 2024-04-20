@@ -118,4 +118,21 @@ public class CategoryServiceImpl implements CategoryService {
 
         BaseContext.removeCurrentId();
     }
+
+    /**
+     * 更新分类信息
+     * @param categoryDTO
+     */
+    @Override
+    public void update(CategoryDTO categoryDTO) {
+        // todo 防御性编程，确保分类存在且可改
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO, category);
+
+        category.setUpdateUser(BaseContext.getCurrentId());
+        category.setUpdateTime(LocalDateTime.now());
+
+        categoryMapper.update(category);
+        BaseContext.removeCurrentId();
+    }
 }
