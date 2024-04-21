@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
-import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -85,16 +84,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 设置默认密码123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-
-        // 设置创建时间和更新时间
-        LocalDateTime now = LocalDateTime.now();
-        employee.setCreateTime(now);
-        employee.setUpdateTime(now);
-
-        // 设置创建人和更新人
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         // 保存到数据库
         employeeMapper.insert(employee);
     }
@@ -154,11 +143,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         // todo 防御性编程：修改的用户必须存在且修改的内容是合法的
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
-
-        // 设置更新人和更新时间
-        employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(LocalDateTime.now());
-
         employeeMapper.update(employee);
     }
 
