@@ -12,7 +12,6 @@ import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
-import com.sky.exception.BaseException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
@@ -98,9 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 保存到数据库
         employeeMapper.insert(employee);
-
-        // 清除当前线程的数据，防止内存泄漏
-        BaseContext.removeCurrentId();
     }
 
     /**
@@ -164,7 +160,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
 
         employeeMapper.update(employee);
-        BaseContext.removeCurrentId();
     }
 
 

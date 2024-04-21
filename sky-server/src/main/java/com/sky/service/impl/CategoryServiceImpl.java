@@ -67,7 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .updateUser(BaseContext.getCurrentId())
                 .build();
         categoryMapper.update(category);
-        BaseContext.removeCurrentId();
     }
 
     /**
@@ -115,8 +114,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateTime(now);
 
         categoryMapper.save(category);
-
-        BaseContext.removeCurrentId();
     }
 
     /**
@@ -133,7 +130,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateTime(LocalDateTime.now());
 
         categoryMapper.update(category);
-        BaseContext.removeCurrentId();
     }
 
     @Override
