@@ -6,3 +6,10 @@ sky:
     database: sky_take_out
     username: docker_mysql
     password: "00000000"
+
+minio:
+  endpoint: http://192.168.177.135:49007 #Minio服务所在地址
+  bucketName-dish: cqwm-dish #存储桶名称
+  accessKey: test00000000 #访问的key
+  secretKey: "00000000" #访问的秘钥
+  expireTime: 5 # 访问链接过期时间（分钟）
