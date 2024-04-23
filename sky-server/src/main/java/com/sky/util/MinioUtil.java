@@ -29,7 +29,7 @@ public class MinioUtil {
     @Autowired
     private MinioClient minioClient;
 
-    @Value("${minio.expireTime}")
+    @Value("${minio.expire-time}")
     private int expireTime;
 
     /**
