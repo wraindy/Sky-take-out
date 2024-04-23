@@ -75,9 +75,10 @@ public class MinioUtil {
      * 获取对象下载url
      * @param bucketName 桶名
      * @param objectName 对象名
+     * @param forever 是否永不过期
      * @return 对象存在必定返回url，其他情况抛异常
      */
-    public String getObjectUrl(String bucketName, String objectName){
+    public String getObjectUrl(String bucketName, String objectName, boolean forever){
 
         if(!objectExists(bucketName, objectName)){
             throw new MinioUtilException("bucket <"+bucketName+"> 存在，但"
@@ -85,13 +86,24 @@ public class MinioUtil {
         }
 
         String url;
-        GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs
-                .builder()
-                .method(Method.GET)
-                .bucket(bucketName)
-                .object(objectName)
-                .expiry(minioConfig.getExpireTime(), TimeUnit.MINUTES)
-                .build();
+        GetPresignedObjectUrlArgs args;
+        if(forever){
+            args = GetPresignedObjectUrlArgs
+                    .builder()
+                    .method(Method.GET)
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .build();
+        } else {
+            args = GetPresignedObjectUrlArgs
+                    .builder()
+                    .method(Method.GET)
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .expiry(minioConfig.getExpireTime(), TimeUnit.MINUTES)
+                    .build();
+        }
+
         try {
             url = minioClient.getPresignedObjectUrl(args);
         } catch (Exception e){
