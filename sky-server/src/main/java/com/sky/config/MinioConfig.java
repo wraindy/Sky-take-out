@@ -16,11 +16,14 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "minio")
+@ConfigurationProperties(prefix = "sky.minio")
 public class MinioConfig {
     private String endpoint;
     private String accessKey;
     private String secretKey;
+
+    private int expireTime;
+    private String bucketNameDish;
 
     @Bean
     public MinioClient minioClient() {

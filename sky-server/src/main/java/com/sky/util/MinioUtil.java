@@ -1,5 +1,6 @@
 package com.sky.util;
 
+import com.sky.config.MinioConfig;
 import com.sky.exception.MinioUtilException;
 import io.minio.*;
 
@@ -29,8 +30,8 @@ public class MinioUtil {
     @Autowired
     private MinioClient minioClient;
 
-    @Value("${minio.expire-time}")
-    private int expireTime;
+    @Autowired
+    private MinioConfig minioConfig;
 
     /**
      * 判断桶是否存在
@@ -89,7 +90,7 @@ public class MinioUtil {
                 .method(Method.GET)
                 .bucket(bucketName)
                 .object(objectName)
-                .expiry(expireTime, TimeUnit.MINUTES)
+                .expiry(minioConfig.getExpireTime(), TimeUnit.MINUTES)
                 .build();
         try {
             url = minioClient.getPresignedObjectUrl(args);
