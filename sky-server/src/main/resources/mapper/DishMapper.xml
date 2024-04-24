@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.DishMapper">
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into dish (name, category_id, price, image, description,status, create_user, create_time, update_user, update_time)
         VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime})
     </insert>
+
+    <select id="pageQuery" resultType="com.sky.vo.DishVO">
+#         该语句比较复杂，先在MySQL图形界面上测试成功再写回来
+#         为满足DishVO的categoryName字段，因此需要给category.name起别名
+        SELECT dish.*, category.name as categoryName FROM dish left join category on dish.category_id = category.id
+        <where>
+            <if test="name != null">
+                and dish.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and dish.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and dish.status = #{status}
+            </if>
+        </where>
+        order by dish.create_time desc
+    </select>
 </mapper>
