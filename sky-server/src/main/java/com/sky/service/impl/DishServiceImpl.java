@@ -2,12 +2,17 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DeletionNotAllowedException;
+import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Wraindy
@@ -34,6 +40,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
+
+    @Autowired
+    private SetMealDishMapper setMealDishMapper;
 
     /**
      * 新增菜品（带有口味数据）
@@ -122,4 +131,39 @@ public class DishServiceImpl implements DishService {
 
     }
 
+    /**
+     * 菜品的起售和停售
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Dish dish = Dish
+                .builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(dish);
+    }
+
+    /**
+     * 根据菜品id获取菜品信息（带口味信息）
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO getByIdWithFlavors(Long id) {
+        Dish dish = dishMapper.getById(id);
+        List<DishFlavor> flavors = dishFlavorMapper.getByDishId(id);
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(flavors);
+
+        // categoryName非必须，这里就不需要了
+        // 因为DishMapper的pageQuery已经把categoryName返回给前端，前端不需要重复查询
+//        String categoryName = categoryMapper.getNameById(dish.getCategoryId());
+//        dishVO.setCategoryName(categoryName);
+
+        return dishVO;
+    }
 }

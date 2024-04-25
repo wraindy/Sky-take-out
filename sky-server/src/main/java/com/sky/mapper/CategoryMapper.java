@@ -57,4 +57,12 @@ public interface CategoryMapper {
      * @return
      */
     List<Category> list(Integer type);
+
+    /**
+     * 根据分类id获取分类名
+     * @param categoryId
+     * @return
+     */
+    @Select("select * from category where id = #{categoryId}")
+    String getNameById(Long categoryId);
 }
