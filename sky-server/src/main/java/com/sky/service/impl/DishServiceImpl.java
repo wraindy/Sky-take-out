@@ -76,4 +76,46 @@ public class DishServiceImpl implements DishService {
         Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
         return new PageResult(page.getTotal(), page.getResult());
     }
+
+    /**
+     * 批量删除菜品
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void deleteBatch(List<Long> ids) {
+
+        // 判断菜品是否能够删除
+        for(Long id : ids){
+            // 判断菜品是否起售
+            // 下面if语句没有跟黑马，而是自己写的getStatusById
+            if(Objects.equals(dishMapper.getStatusById(id), StatusConstant.ENABLE)){
+                // 菜品在起售，不能删除
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+        }
+
+          // 以下是黑马原版
+//        for(Long id : ids){
+//            Dish dish = dishMapper.getById(id);
+//            if(Objects.equals(dish.getStatus(), StatusConstant.ENABLE)){
+//                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+//            }
+//        }
+
+        // 判断菜品是否被套餐关联
+        List<Long> setMealIds = setMealDishMapper.getSetMealIdsByDishIds(ids);
+        if (setMealIds != null && !setMealIds.isEmpty()){
+            // 当前菜品集合存在个别菜品被套餐关联了，不能删除
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+
+        for(Long id : ids){
+            // 删除菜品表数据
+            dishMapper.deleteById(id);
+            // 删除菜品对应的口味表数据
+            dishFlavorMapper.deleteByDishId(id);
+        }
+    }
+
 }

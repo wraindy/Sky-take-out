@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author Wraindy
  * @DateTime 2024/04/23 20:05
@@ -40,4 +42,13 @@ public class DishController {
         PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
+
+    @DeleteMapping
+    @ApiOperation("菜品批量删除")
+    public Result deleteBatch(@RequestParam List<Long> ids){
+        log.info("要求批量删除的菜品id：{}", ids);
+        dishService.deleteBatch(ids);
+        return Result.success();
+    }
+
 }
