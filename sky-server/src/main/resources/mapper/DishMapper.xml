@@ -6,6 +6,36 @@
         insert into dish (name, category_id, price, image, description,status, create_user, create_time, update_user, update_time)
         VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime})
     </insert>
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
     <delete id="deleteBatch">
         delete from dish where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
@@ -13,8 +43,6 @@
         </foreach>
     </delete>
 
-<!--#         该语句比较复杂，先在MySQL图形界面上测试成功再写回来
-#         为满足DishVO的categoryName字段，因此需要给category.name起别名-->
     <!--#         该语句比较复杂，先在MySQL图形界面上测试成功再写回来
     #         为满足DishVO的categoryName字段，因此需要给category.name起别名-->
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
