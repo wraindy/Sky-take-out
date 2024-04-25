@@ -52,7 +52,7 @@ public interface CategoryMapper {
     void save(Category category);
 
     /**
-     * 根据类型查询分类
+     * 根据类型（菜品or套餐）查询分类
      * @param type
      * @return
      */
