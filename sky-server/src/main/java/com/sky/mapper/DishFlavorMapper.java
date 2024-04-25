@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @Author Wraindy
  * @DateTime 2024/04/23 20:36
- * Description
+ * Description 本表没有公共字段，因此不需要@AutoFill注解
  * Notice
  **/
 @Mapper
