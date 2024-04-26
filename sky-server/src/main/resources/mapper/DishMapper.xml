@@ -60,4 +60,11 @@
         </where>
         order by dish.create_time desc
     </select>
+    <select id="getStatusByIds" resultType="java.lang.Integer">
+        select dish.status from dish where id
+        in
+        <foreach collection="dishIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

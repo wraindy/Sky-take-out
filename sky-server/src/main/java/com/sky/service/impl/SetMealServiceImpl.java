@@ -2,10 +2,13 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Wraindy
@@ -32,6 +36,9 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Autowired
     private SetMealDishMapper setMealDishMapper;
+
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 套餐信息分页查询
@@ -84,6 +91,16 @@ public class SetMealServiceImpl implements SetMealService {
      */
     @Override
     public void startOrStop(Long id, Integer status) {
+
+        if(Objects.equals(status, StatusConstant.ENABLE)){
+            List<Long> dishIds = setMealDishMapper.getDishIdsBySetMealId(id);
+            List<Integer> dishesStatus = dishMapper.getStatusByIds(dishIds);
+            for(Integer ds : dishesStatus){
+                if(Objects.equals(ds, StatusConstant.DISABLE)){
+                    throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                }
+            }
+        }
         Setmeal setmeal = Setmeal
                 .builder()
                 .id(id)
