@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -9,10 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author Wraindy
@@ -42,5 +40,13 @@ public class SetMealController {
         log.info("根据id查询套餐信息：{}", id);
         SetmealVO setmealVO = setMealService.getById(id);
         return Result.success(setmealVO);
+    }
+
+    @PutMapping
+    @ApiOperation("修改套餐信息（带有菜品数据）")
+    public Result update(@RequestBody SetmealDTO setmealDTO){
+        log.info("修改套餐信息（带有菜品数据）：{}", setmealDTO);
+        setMealService.updateWithDishes(setmealDTO);
+        return Result.success();
     }
 }
