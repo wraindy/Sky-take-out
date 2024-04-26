@@ -76,4 +76,19 @@ public class SetMealServiceImpl implements SetMealService {
         }
         setMealDishMapper.insert(setmealDTO.getSetmealDishes());
     }
+
+    /**
+     * 套餐的启售和停售
+     * @param id
+     * @param status
+     */
+    @Override
+    public void startOrStop(Long id, Integer status) {
+        Setmeal setmeal = Setmeal
+                .builder()
+                .id(id)
+                .status(status)
+                .build();
+        setMealMapper.update(setmeal);
+    }
 }
