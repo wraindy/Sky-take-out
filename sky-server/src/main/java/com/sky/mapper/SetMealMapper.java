@@ -1,5 +1,8 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,4 +21,11 @@ public interface SetMealMapper {
      */
     @Select("select count(1) from setmeal where category_id = #{categoryId}")
     Integer countByCategoryId(Long categoryId);
+
+    /**
+     * 分页查询套餐信息
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }
