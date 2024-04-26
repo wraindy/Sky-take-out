@@ -35,7 +35,7 @@ public interface DishService {
     void deleteBatch(List<Long> ids);
 
     /**
-     * 菜品的起售或停售
+     * 菜品的启售或停售
      * @param status
      * @param id
      */

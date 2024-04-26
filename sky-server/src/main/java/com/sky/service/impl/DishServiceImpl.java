@@ -95,10 +95,10 @@ public class DishServiceImpl implements DishService {
 
         // 判断菜品是否能够删除
         for(Long id : ids){
-            // 判断菜品是否起售
+            // 判断菜品是否启售
             // 下面if语句没有跟黑马，而是自己写的getStatusById
             if(Objects.equals(dishMapper.getStatusById(id), StatusConstant.ENABLE)){
-                // 菜品在起售，不能删除
+                // 菜品在启售，不能删除
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
         }
@@ -131,7 +131,7 @@ public class DishServiceImpl implements DishService {
     }
 
     /**
-     * 菜品的起售和停售
+     * 菜品的启售和停售
      * @param status
      * @param id
      */
