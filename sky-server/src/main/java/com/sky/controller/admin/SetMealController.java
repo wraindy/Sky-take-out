@@ -4,11 +4,13 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
+import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +34,13 @@ public class SetMealController {
         log.info("套餐分页查询参数：{}", setmealPageQueryDTO);
         PageResult pageResult = setMealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询套餐信息")
+    public Result<SetmealVO> getById(@PathVariable Long id){
+        log.info("根据id查询套餐信息：{}", id);
+        SetmealVO setmealVO = setMealService.getById(id);
+        return Result.success(setmealVO);
     }
 }

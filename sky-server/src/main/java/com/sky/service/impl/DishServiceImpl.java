@@ -179,4 +179,13 @@ public class DishServiceImpl implements DishService {
         dishFlavorMapper.deleteByDishId(dishDTO.getId());
         dishFlavorMapper.insertBatch(dishDTO.getFlavors());
     }
+
+    /**
+     * 根据分类id获取菜品集合
+     * @param id
+     */
+    @Override
+    public List<DishVO> getByCategoryId(Long id) {
+        return dishMapper.getByCategoryId(id);
+    }
 }
