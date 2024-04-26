@@ -101,9 +101,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 开始分页查询(基于拦截器动态拼接sql语句的limit部分)
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         Page<Employee> employees = employeeMapper.pageQuery(employeePageQueryDTO);
-
-        // 封装结果
-        PageResult pageResult = new PageResult();
         long total = employees.getTotal();
         List<Employee> records = employees.getResult();
 
