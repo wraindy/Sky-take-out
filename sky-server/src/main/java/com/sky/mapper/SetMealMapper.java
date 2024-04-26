@@ -9,6 +9,8 @@ import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @Author Wraindy
  * @DateTime 2024/04/20 20:32
@@ -46,4 +48,17 @@ public interface SetMealMapper {
      */
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    /**
+     * 根据套餐id查看该套餐的状态
+     * @param id
+     */
+    @Select("select status from setmeal where id = #{id}")
+    Integer getStatusById(Long id);
+
+    /**
+     * 根据套餐id结合，删除套餐表中的数据
+     * @param ids
+     */
+    void deleteByIds(List<Long> ids);
 }

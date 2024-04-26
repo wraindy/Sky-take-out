@@ -12,6 +12,13 @@
         delete from setmeal_dish where setmeal_id = #{id}
     </delete>
 
+    <delete id="deleteBySetMealIds">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="getSetMealIdsByDishIds" resultType="java.lang.Long">
         select setmeal_dish.setmeal_id
         from setmeal_dish

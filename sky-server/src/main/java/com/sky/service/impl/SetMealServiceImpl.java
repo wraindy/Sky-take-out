@@ -8,6 +8,7 @@ import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
@@ -107,5 +108,25 @@ public class SetMealServiceImpl implements SetMealService {
                 .status(status)
                 .build();
         setMealMapper.update(setmeal);
+    }
+
+    /**
+     * 套餐批量删除
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void deleteBatch(List<Long> ids) {
+        for(Long id : ids){
+            if(Objects.equals(setMealMapper.getStatusById(id), StatusConstant.ENABLE)){
+                // 启售中的套餐不能被删除
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        }
+
+        // 删除套餐表内数据
+        setMealMapper.deleteByIds(ids);
+        // 删除套餐与菜品的关联数据
+        setMealDishMapper.deleteBySetMealIds(ids);
     }
 }

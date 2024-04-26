@@ -5,6 +5,8 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.vo.SetmealVO;
 
+import java.util.List;
+
 /**
  * @Author Wraindy
  * @DateTime 2024/04/26 14:36
@@ -40,4 +42,10 @@ public interface SetMealService {
      * @param status
      */
     void startOrStop(Long id, Integer status);
+
+    /**
+     * 套餐批量删除
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
 }
