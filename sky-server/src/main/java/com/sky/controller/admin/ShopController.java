@@ -21,7 +21,7 @@ import java.util.Objects;
 @RestController("adminShopController")
 @RequestMapping("/admin/shop")
 @Slf4j
-@Api(tags = "店铺操作接口(admin)")
+@Api(tags = "店铺操作接口")
 public class ShopController {
 
     @Autowired
