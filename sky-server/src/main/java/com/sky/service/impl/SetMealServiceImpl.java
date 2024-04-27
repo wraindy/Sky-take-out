@@ -9,6 +9,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
+import com.sky.exception.SetmealEnableFailedException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
@@ -98,7 +99,7 @@ public class SetMealServiceImpl implements SetMealService {
             List<Integer> dishesStatus = dishMapper.getStatusByIds(dishIds);
             for(Integer ds : dishesStatus){
                 if(Objects.equals(ds, StatusConstant.DISABLE)){
-                    throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
                 }
             }
         }
