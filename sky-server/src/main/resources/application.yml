@@ -42,6 +42,10 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+    # 下面是用户端jwt的设置
+    user-secret-key: hello_world666
+    user-ttl: 7200000
+    user-token-name: authentication
 
   minio:
     endpoint: ${sky.minio.endpoint}
