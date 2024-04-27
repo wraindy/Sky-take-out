@@ -66,4 +66,12 @@ public class SetMealController {
         setMealService.deleteBatch(ids);
         return Result.success();
     }
+
+    @PostMapping
+    @ApiOperation("新增套餐（带有菜品数据）")
+    public Result save(@RequestBody SetmealDTO setmealDTO){
+        log.info("新增套餐（带有菜品数据）：{}", setmealDTO);
+        setMealService.saveWithDishes(setmealDTO);
+        return Result.success();
+    }
 }
