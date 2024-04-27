@@ -13,3 +13,9 @@ sky:
     secret-key: "OfqlTh1bcw1QUKLc87fC0chgZdU2qG9T5TYtdkQF" #访问的秘钥
     bucket-name-dish: cqwm-dish #存储桶名称
     expire-time: 5 # 预签名url的过期时间（分钟）
+
+  redis:
+    host: 192.168.177.135
+    port: 44444
+    password: "00000000"
+    database: 0
