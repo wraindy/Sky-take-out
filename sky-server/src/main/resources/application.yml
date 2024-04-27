@@ -49,4 +49,7 @@ sky:
     secret-key: ${sky.minio.secret-key}
     bucket-name-dish: ${sky.minio.bucket-name-dish} #存储桶名称（菜品图片）
     expire-time: ${sky.minio.expire-time} # 预签名url的过期时间（分钟）
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
 
