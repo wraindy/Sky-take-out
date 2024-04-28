@@ -8,5 +8,10 @@ package com.sky.constant;
  **/
 
 public class RedisConstant {
+
+    // 店铺营业状态
     public static final String SHOP_STATUS = "SHOP_STATUS";
+
+    // 根据分类id查询的菜品缓存
+    public static final String CATEGORY_CACHE = "CATEGORY:";
 }
