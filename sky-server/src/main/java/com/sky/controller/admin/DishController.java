@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.RedisConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
@@ -10,9 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author Wraindy
@@ -29,10 +32,18 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping
     @ApiOperation("新增菜品")
     public Result save(@RequestBody DishDTO dishDTO){
         dishService.saveWithFlavor(dishDTO);
+
+        // 清理Redis缓存（删除包含了该菜品的分类即可）
+        String key = RedisConstant.CATEGORY_CACHE + dishDTO.getCategoryId().toString();
+        clearCache(key);
+
         return Result.success();
     }
 
@@ -49,6 +60,10 @@ public class DishController {
     public Result deleteBatch(@RequestParam List<Long> ids){
         log.info("要求批量删除的菜品id：{}", ids);
         dishService.deleteBatch(ids);
+
+        // 批量删除菜品有可能影响多个分类，因此简单起见，全部删除
+        clearCache(RedisConstant.CATEGORY_CACHE);
+
         return Result.success();
     }
 
@@ -56,6 +71,10 @@ public class DishController {
     @ApiOperation("菜品的启售和停售")
     public Result startOrStop(@PathVariable("status") Integer status, Long id){
         dishService.startOrStop(status, id);
+
+        // 只影响一个分类，但是还是要全部清空（可能可以有优化）
+        clearCache(RedisConstant.CATEGORY_CACHE);
+
         return Result.success();
     }
 
@@ -77,6 +96,10 @@ public class DishController {
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("修改菜品的参数：{}",dishDTO);
         dishService.updateWithFlavor(dishDTO);
+
+        // 如果修改了菜品的分类，将影响两个分类（菜品修改前后），简单起见，清空所有分类缓存
+        clearCache(RedisConstant.CATEGORY_CACHE);
+
         return Result.success();
     }
 
@@ -85,5 +108,15 @@ public class DishController {
     public Result<List<DishVO>> getByCategoryId(Long categoryId){
         List<DishVO> dishVOList = dishService.getByCategoryId(categoryId);
         return Result.success(dishVOList);
+    }
+
+    /**
+     * 清除Redis缓存
+     * 输入key全称，删除该key；输入key前缀，删除所有以该前缀的key
+     * @param pattern
+     */
+    private void clearCache(String pattern){
+        Set keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
     }
 }
