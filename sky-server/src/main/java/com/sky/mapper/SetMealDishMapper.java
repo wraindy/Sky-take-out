@@ -65,4 +65,12 @@ public interface SetMealDishMapper {
      * @param ids
      */
     void deleteBySetMealIds(List<Long> ids);
+
+    /**
+     * 根据套餐id获取dishItem所需的name和copies信息
+     * @param setMealId
+     * @return
+     */
+    @Select("select dish_id, name, copies from setmeal_dish where setmeal_id = #{setMealId}")
+    List<SetmealDish> getDishItem(Long setMealId);
 }

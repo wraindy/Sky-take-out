@@ -67,4 +67,7 @@
             #{id}
         </foreach>
     </select>
+    <select id="queryDishItem" resultType="com.sky.vo.DishItemVO">
+        select * from setmeal_dish
+    </select>
 </mapper>

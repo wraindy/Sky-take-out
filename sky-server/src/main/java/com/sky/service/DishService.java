@@ -3,6 +3,7 @@ package com.sky.service;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 
 import java.util.List;
@@ -66,4 +67,11 @@ public interface DishService {
      * @return
      */
     List<DishVO> getByCategoryIdWithFlavors(Long categoryId);
+
+    /**
+     * 根据套餐id查询包含的菜品
+     * @param id
+     * @return
+     */
+    List<DishItemVO> queryDishItem(Long id);
 }

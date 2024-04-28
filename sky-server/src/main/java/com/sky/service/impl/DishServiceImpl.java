@@ -8,12 +8,14 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -205,5 +208,25 @@ public class DishServiceImpl implements DishService {
         }
 
         return dishVOS;
+    }
+
+    /**
+     * 根据套餐id查询包含的菜品
+     * @param setMealId
+     * @return
+     */
+    @Override
+    public List<DishItemVO> queryDishItem(Long setMealId) {
+        //dish_id, name, copies<setmeal_dish>表; image, description<dish>表
+        // 要先查询关联表，因为若菜品更新，关联表还未同步，确保套餐信息稳定
+        List<SetmealDish> setmealDishList = setMealDishMapper.getDishItem(setMealId);
+        List<DishItemVO> divList = new ArrayList<>();
+        for (SetmealDish sd : setmealDishList){
+            DishItemVO dishItemVO = dishMapper.getDishItem(sd.getDishId());
+            dishItemVO.setName(sd.getName());
+            dishItemVO.setCopies(sd.getCopies());
+            divList.add(dishItemVO);
+        }
+        return divList;
     }
 }
