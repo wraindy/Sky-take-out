@@ -19,6 +19,7 @@ import java.util.List;
  * @DateTime 2024/04/26 14:31
  * Description
  * Notice   对应用户端的套餐查询做缓存管理（SpringCache）
+ * 修改、启售停售、删除都清空全部缓存；新增则清空对应的一个缓存
  **/
 @RestController
 @RequestMapping("/admin/setmeal")

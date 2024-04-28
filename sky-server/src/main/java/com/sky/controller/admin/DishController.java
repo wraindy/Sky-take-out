@@ -22,6 +22,7 @@ import java.util.Set;
  * @DateTime 2024/04/23 20:05
  * Description
  * Notice   对应用户端的菜品查询做缓存管理（Redis）
+ * 修改、启售停售、删除都清空全部缓存；新增则清空对应的一个缓存
  **/
 @Slf4j
 @RestController
