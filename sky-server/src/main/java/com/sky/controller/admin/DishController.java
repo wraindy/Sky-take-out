@@ -43,7 +43,7 @@ public class DishController {
 
         // 清理Redis缓存（删除包含了该菜品的分类即可）
         String key = RedisConstant.CATEGORY_CACHE + dishDTO.getCategoryId().toString();
-        clearCache(key);
+        clearCache(key, false);
 
         return Result.success();
     }
@@ -63,7 +63,7 @@ public class DishController {
         dishService.deleteBatch(ids);
 
         // 批量删除菜品有可能影响多个分类，因此简单起见，全部删除
-        clearCache(RedisConstant.CATEGORY_CACHE);
+        clearCache(RedisConstant.CATEGORY_CACHE, true);
 
         return Result.success();
     }
@@ -74,7 +74,7 @@ public class DishController {
         dishService.startOrStop(status, id);
 
         // 只影响一个分类，但是还是要全部清空（可能可以有优化）
-        clearCache(RedisConstant.CATEGORY_CACHE);
+        clearCache(RedisConstant.CATEGORY_CACHE, true);
 
         return Result.success();
     }
@@ -99,7 +99,7 @@ public class DishController {
         dishService.updateWithFlavor(dishDTO);
 
         // 如果修改了菜品的分类，将影响两个分类（菜品修改前后），简单起见，清空所有分类缓存
-        clearCache(RedisConstant.CATEGORY_CACHE);
+        clearCache(RedisConstant.CATEGORY_CACHE, true);
 
         return Result.success();
     }
@@ -115,9 +115,11 @@ public class DishController {
      * 清除Redis缓存
      * 输入key全称，删除该key；输入key前缀，删除所有以该前缀的key
      * @param pattern
+     * @param clearAll 如果为真，则清空以pattern为前缀的key,否则只精准清空pattern的key
      */
-    private void clearCache(String pattern){
-        Set keys = redisTemplate.keys(pattern);
+    private void clearCache(String pattern, boolean clearAll){
+        String _key = clearAll ? pattern + "*" : pattern;
+        Set keys = redisTemplate.keys(_key);
         redisTemplate.delete(keys);
     }
 }
