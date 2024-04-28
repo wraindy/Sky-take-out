@@ -79,7 +79,7 @@ public class MinioUtil {
      * @return 对象存在必定返回url，其他情况抛异常
      */
     public String getObjectUrl(String bucketName, String objectName, boolean forever){
-
+        // todo 其实不是真的永不过期，而是过期时间为七天，需要修改
         if(!objectExists(bucketName, objectName)){
             throw new MinioUtilException("bucket <"+bucketName+"> 存在，但"
                     +"object <"+objectName+"> 不存在");
