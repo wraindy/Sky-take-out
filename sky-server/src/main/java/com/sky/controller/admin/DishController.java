@@ -21,7 +21,7 @@ import java.util.Set;
  * @Author Wraindy
  * @DateTime 2024/04/23 20:05
  * Description
- * Notice
+ * Notice   对应用户端的菜品查询做缓存管理（Redis）
  **/
 @Slf4j
 @RestController

@@ -18,7 +18,7 @@ import java.util.List;
  * @Author Wraindy
  * @DateTime 2024/04/26 14:31
  * Description
- * Notice
+ * Notice   对应用户端的套餐查询做缓存管理（SpringCache）
  **/
 @RestController
 @RequestMapping("/admin/setmeal")

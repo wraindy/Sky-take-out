@@ -4,7 +4,7 @@ package com.sky.controller.user;
  * @Author Wraindy
  * @DateTime 2024/04/28 08:29
  * Description
- * Notice
+ * Notice   对用户端的菜品（分类→菜品分类）查询使用Redis做缓存管理
  **/
 
 import com.sky.constant.RedisConstant;
