@@ -189,4 +189,21 @@ public class DishServiceImpl implements DishService {
     public List<DishVO> getByCategoryId(Long id) {
         return dishMapper.getByCategoryId(id);
     }
+
+    /**
+     * 根据分类id获取菜品（包含口味信息）
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<DishVO> getByCategoryIdWithFlavors(Long categoryId) {
+
+        List<DishVO> dishVOS = dishMapper.getByCategoryId(categoryId);
+        for(DishVO dv : dishVOS){
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(dv.getId());
+            dv.setFlavors(flavors);
+        }
+
+        return dishVOS;
+    }
 }
