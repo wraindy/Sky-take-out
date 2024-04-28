@@ -75,6 +75,6 @@ public interface SetMealMapper {
      * @param categoryId
      * @return
      */
-    @Select("select * from setmeal where category_id = #{categoryId}")
+    @Select("select * from setmeal where category_id = #{categoryId} and status = 1")
     List<DishVO> getByCategoryId(Long categoryId);
 }
