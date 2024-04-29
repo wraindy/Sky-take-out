@@ -22,7 +22,7 @@ public interface ShoppingCartMapper {
 
 
     /**
-     * 根据购物车信息id，商品数量自增一
+     * 更新购物车商品数量
      * @param shoppingCart
      */
     @Update("update shopping_cart set number = #{number} where id = #{id}")
