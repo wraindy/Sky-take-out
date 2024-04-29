@@ -55,7 +55,7 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
             // 购物车数据唯一，因此取index = 0
             ShoppingCart sc = list.get(0);
             sc.setNumber(sc.getNumber()+1);
-            shoppingCartMapper.updateNumberById(shoppingCart);
+            shoppingCartMapper.updateNumberById(sc);
         } else{
 
             // 数据库中不存在,则新增购物车信息
