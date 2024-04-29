@@ -50,4 +50,10 @@ public interface ShoppingCartMapper {
      */
     @Delete("delete from sky_take_out.shopping_cart where user_id = #{userId}")
     void cleanAll(Long userId);
+
+    /**
+     * 移除某个购物车的商品
+     * @param shoppingCart
+     */
+    void removeItem(ShoppingCart shoppingCart);
 }
