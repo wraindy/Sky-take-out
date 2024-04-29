@@ -84,4 +84,14 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
             shoppingCartMapper.insert(shoppingCart);
         }
     }
+
+    /**
+     * 用户查询购物车信息
+     * @return
+     */
+    @Override
+    public List<ShoppingCart> queryCart() {
+        Long userId = BaseContext.getCurrentId();
+        return shoppingCartMapper.queryCart(userId);
+    }
 }
