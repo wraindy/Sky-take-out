@@ -24,4 +24,9 @@ public interface ShoppingCartServer {
      * @return
      */
     List<ShoppingCart> queryCart();
+
+    /**
+     * 清空购物车
+     */
+    void cleanAll();
 }

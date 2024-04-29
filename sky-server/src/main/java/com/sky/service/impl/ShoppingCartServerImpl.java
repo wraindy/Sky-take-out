@@ -94,4 +94,10 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
         Long userId = BaseContext.getCurrentId();
         return shoppingCartMapper.queryCart(userId);
     }
+
+    @Override
+    public void cleanAll() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.cleanAll(userId);
+    }
 }
