@@ -30,4 +30,14 @@ public class AddressBookServerImpl implements AddressBookServer {
         Long userId = BaseContext.getCurrentId();
         return addressBookMapper.getByUserId(userId);
     }
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    @Override
+    public AddressBook getById(Long id) {
+        return addressBookMapper.getById(id);
+    }
 }

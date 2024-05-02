@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,5 +34,12 @@ public class AddressBookController {
     public Result<List<AddressBook>> list(){
         List<AddressBook> list = addressBookServer.list();
         return Result.success(list);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询地址")
+    public Result<AddressBook> getById(@PathVariable Long id){
+        AddressBook ab = addressBookServer.getById(id);
+        return Result.success(ab);
     }
 }

@@ -21,4 +21,12 @@ public interface AddressBookMapper {
      */
     @Select("select * from address_book where user_id = #{userId}")
     List<AddressBook> getByUserId(Long userId);
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    @Select("select * from address_book where id = #{id}")
+    AddressBook getById(Long id);
 }
