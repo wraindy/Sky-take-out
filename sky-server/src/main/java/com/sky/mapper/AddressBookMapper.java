@@ -24,11 +24,11 @@ public interface AddressBookMapper {
 
     /**
      * 根据id查询地址
-     * @param id
+     * @param addressBookId
      * @return
      */
-    @Select("select * from address_book where id = #{id}")
-    AddressBook getById(Long id);
+    @Select("select * from address_book where id = #{addressBookId}")
+    AddressBook getById(Long addressBookId);
 
     /**
      * 查询默认地址

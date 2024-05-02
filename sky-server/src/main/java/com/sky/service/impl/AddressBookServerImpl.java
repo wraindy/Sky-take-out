@@ -33,12 +33,12 @@ public class AddressBookServerImpl implements AddressBookServer {
 
     /**
      * 根据id查询地址
-     * @param id
+     * @param addressBookId
      * @return
      */
     @Override
-    public AddressBook getById(Long id) {
-        return addressBookMapper.getById(id);
+    public AddressBook getById(Long addressBookId) {
+        return addressBookMapper.getById(addressBookId);
     }
 
     /**

@@ -20,10 +20,10 @@ public interface AddressBookServer {
 
     /**
      * 根据id查询地址
-     * @param id
+     * @param addressBookId
      * @return
      */
-    AddressBook getById(Long id);
+    AddressBook getById(Long addressBookId);
 
     /**
      * 查询默认地址
