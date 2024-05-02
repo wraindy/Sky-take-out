@@ -89,4 +89,13 @@ public class AddressBookServerImpl implements AddressBookServer {
         // todo 参数校验
         addressBookMapper.update(addressBook);
     }
+
+    /**
+     * 删除地址
+     * @param addressBookId
+     */
+    @Override
+    public void delete(Long addressBookId) {
+        addressBookMapper.deleteById(addressBookId);
+    }
 }

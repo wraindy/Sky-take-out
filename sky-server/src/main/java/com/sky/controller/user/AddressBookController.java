@@ -69,4 +69,11 @@ public class AddressBookController {
         addressBookServer.update(addressBook);
         return Result.success();
     }
+
+    @DeleteMapping
+    @ApiOperation("删除地址")
+    public Result delete(Long id){
+        addressBookServer.delete(id);
+        return Result.success();
+    }
 }
