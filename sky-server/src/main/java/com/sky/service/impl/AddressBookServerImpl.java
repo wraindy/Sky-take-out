@@ -80,4 +80,13 @@ public class AddressBookServerImpl implements AddressBookServer {
         addressBookMapper.insert(addressBook);
     }
 
+    /**
+     * 修改地址
+     * @param addressBook
+     */
+    @Override
+    public void update(AddressBook addressBook) {
+        // todo 参数校验
+        addressBookMapper.update(addressBook);
+    }
 }

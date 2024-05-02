@@ -63,4 +63,10 @@ public class AddressBookController {
         return Result.success();
     }
 
+    @PutMapping
+    @ApiOperation("修改地址")
+    public Result update(@RequestBody AddressBook addressBook){
+        addressBookServer.update(addressBook);
+        return Result.success();
+    }
 }
