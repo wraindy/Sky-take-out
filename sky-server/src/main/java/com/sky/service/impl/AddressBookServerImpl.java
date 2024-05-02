@@ -1,11 +1,13 @@
 package com.sky.service.impl;
 
+import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.entity.AddressBook;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.service.AddressBookServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,5 +51,22 @@ public class AddressBookServerImpl implements AddressBookServer {
     public AddressBook listDefault() {
         Long userId = BaseContext.getCurrentId();
         return addressBookMapper.listDefault(userId);
+    }
+
+    /**
+     * 设置默认地址
+     * @param addressBookId
+     */
+    @Override
+    @Transactional
+    public void setDefault(Long addressBookId) {
+        Long userId = BaseContext.getCurrentId();
+        addressBookMapper.setNotDefault(userId);
+        AddressBook addressBook = AddressBook
+                .builder()
+                .id(addressBookId)
+                .isDefault(StatusConstant.ENABLE)
+                .build();
+        addressBookMapper.update(addressBook);
     }
 }

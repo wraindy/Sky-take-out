@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,5 +45,14 @@ public class AddressBookController {
     public Result<AddressBook> listDefault(){
         AddressBook ab = addressBookServer.listDefault();
         return Result.success(ab);
+    }
+
+    @PutMapping("/default")
+    @ApiOperation("设置默认地址")
+    public Result setDefault(@RequestBody AddressBook addressBook){
+        // 用户地址表比较简单，因此无需DTO，可以直接使用entity
+        // 此处只接收id即可
+        addressBookServer.setDefault(addressBook.getId());
+        return Result.success();
     }
 }

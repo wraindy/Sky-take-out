@@ -30,4 +30,10 @@ public interface AddressBookServer {
      * @return
      */
     AddressBook listDefault();
+
+    /**
+     * 设置默认地址
+     * @param addressBookId
+     */
+    void setDefault(Long addressBookId);
 }
