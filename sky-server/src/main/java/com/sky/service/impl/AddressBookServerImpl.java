@@ -69,4 +69,15 @@ public class AddressBookServerImpl implements AddressBookServer {
                 .build();
         addressBookMapper.update(addressBook);
     }
+
+    /**
+     * 新增地址
+     * @param addressBook
+     */
+    @Override
+    public void add(AddressBook addressBook) {
+        addressBook.setUserId(BaseContext.getCurrentId());
+        addressBookMapper.insert(addressBook);
+    }
+
 }

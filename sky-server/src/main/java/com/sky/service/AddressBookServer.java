@@ -36,4 +36,10 @@ public interface AddressBookServer {
      * @param addressBookId
      */
     void setDefault(Long addressBookId);
+
+    /**
+     * 新增地址
+     * @param addressBook
+     */
+    void add(AddressBook addressBook);
 }

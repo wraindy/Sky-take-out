@@ -55,4 +55,12 @@ public class AddressBookController {
         addressBookServer.setDefault(addressBook.getId());
         return Result.success();
     }
+
+    @PostMapping
+    @ApiOperation("新增地址")
+    public Result add(@RequestBody AddressBook addressBook){
+        addressBookServer.add(addressBook);
+        return Result.success();
+    }
+
 }
