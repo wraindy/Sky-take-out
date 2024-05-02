@@ -42,4 +42,11 @@ public class AddressBookController {
         AddressBook ab = addressBookServer.getById(id);
         return Result.success(ab);
     }
+
+    @GetMapping("/default")
+    @ApiOperation("查询默认地址")
+    public Result<AddressBook> listDefault(){
+        AddressBook ab = addressBookServer.listDefault();
+        return Result.success(ab);
+    }
 }

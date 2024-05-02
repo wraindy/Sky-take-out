@@ -24,4 +24,10 @@ public interface AddressBookServer {
      * @return
      */
     AddressBook getById(Long id);
+
+    /**
+     * 查询默认地址
+     * @return
+     */
+    AddressBook listDefault();
 }
