@@ -30,8 +30,11 @@ import java.util.Base64;
 import java.util.List;
 
 /**
- * 微信支付工具类
- */
+ * @Author Wraindy
+ * @DateTime 2024/05/04 21:00
+ * Description 微信支付工具类
+ * Notice
+ **/
 @Component
 public class WeChatPayUtil {
 
@@ -130,6 +133,8 @@ public class WeChatPayUtil {
      * @param description 商品描述
      * @param openid      微信用户的openid
      * @return
+     * 小程序预支付（下单）的方式和jsapi下单的方式一致
+     * 参考文档：https://pay.weixin.qq.com/docs/merchant/apis/jsapi-payment/direct-jsons/jsapi-prepay.html
      */
     private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -155,22 +160,24 @@ public class WeChatPayUtil {
     }
 
     /**
-     * 小程序支付
-     *
+     *  完成微信预支付并返回小程序调用支付时所需参数
      * @param orderNum    商户订单号
      * @param total       金额，单位 元
      * @param description 商品描述
      * @param openid      微信用户的openid
      * @return
+     * 微信预支付：https://pay.weixin.qq.com/docs/merchant/apis/mini-program-payment/mini-prepay.html
+     * 小程序调起支付：https://pay.weixin.qq.com/docs/merchant/apis/mini-program-payment/mini-transfer-payment.html
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
-        //统一下单，生成预支付交易单
+        //统一下单，生成预支付交易单（微信预支付）
         String bodyAsString = jsapi(orderNum, total, description, openid);
         //解析返回结果
         JSONObject jsonObject = JSON.parseObject(bodyAsString);
         System.out.println(jsonObject);
 
         String prepayId = jsonObject.getString("prepay_id");
+        // 小程序调用支付时所需参数
         if (prepayId != null) {
             String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
             String nonceStr = RandomStringUtils.randomNumeric(32);
