@@ -92,39 +92,37 @@ public class OrderServiceImpl implements OrderService {
         orders.setPayStatus(Orders.UN_PAID);
         // 实收总金额
         BigDecimal totalMoney = new BigDecimal(0);
+        // 总打包次数
+        int totalPackNumber = 0;
+
         // 地址信息快照，微信登录的小程序没有用户名字段，因此忽略user_name字段
         orders.setPhone(addressBook.getPhone());
         orders.setAddress(addressBook.getProvinceName()+
                 addressBook.getCityName()+
                 addressBook.getDetail());
         orders.setConsignee(addressBook.getConsignee());
-        // todo 后台计算打包费和派送费
+        orders.setTablewareNumber(ordersSubmitDTO.getTablewareNumber());
 
         // 构造订单明细表数据
         List<OrderDetail> odList = new ArrayList<>();
-        // 总餐具个数
-        Integer totalTablewareNumber = 0;
         for(ShoppingCart sc : shoppingCartList){
             OrderDetail orderDetail = new OrderDetail();
             BeanUtils.copyProperties(sc, orderDetail);
             // 上面orderMapper.insert(orders)会返回主键值
             orderDetail.setOrderId(Long.parseLong(orders.getNumber()));
             odList.add(orderDetail);
-            // 后台手动计算总金额
+
+            // 计算菜品费用（单价*数量）
             totalMoney = totalMoney.add(orderDetail.getAmount().multiply(new BigDecimal(orderDetail.getNumber())));
-            // 为餐具计算餐品的数量
-            totalTablewareNumber += sc.getNumber();
+            // 计算打包次数（份/次）
+            totalPackNumber += sc.getNumber();
         }
 
-        // 设置实收总金额（打包费 6元/次 + 餐具费用 个/1元）
-        totalMoney = totalMoney.add(new BigDecimal(6));
-        if(ordersSubmitDTO.getTablewareStatus() == 0){
-            // 自定义餐具数量
-            totalMoney = totalMoney.add(new BigDecimal(ordersSubmitDTO.getTablewareNumber()));
-        } else {
-            totalMoney = totalMoney.add(new BigDecimal(totalTablewareNumber));
-        }
-        orders.setAmount(totalMoney);
+        // 计算总打包费（次/1元）
+        BigDecimal totalPackAmount = new BigDecimal(1).multiply(new BigDecimal(totalPackNumber));
+
+        // 计算总实收金额（菜品费用 + 配送费 6元/次 + 打包费 次/1元）
+        orders.setAmount(totalMoney.add(totalPackAmount).add(new BigDecimal(6)));
 
         // 插入订单表和订单明细表
         orderMapper.insert(orders);
