@@ -221,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public PageResult pageQueryOrders(OrdersPageQueryDTO ordersPageQueryDTO) {
+    public PageResult queryHistory(OrdersPageQueryDTO ordersPageQueryDTO) {
 
         // 设置用户id
         ordersPageQueryDTO.setUserId(BaseContext.getCurrentId());

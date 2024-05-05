@@ -50,7 +50,7 @@ public interface OrderService {
      * @param ordersPageQueryDTO
      * @return
      */
-    PageResult pageQueryOrders(OrdersPageQueryDTO ordersPageQueryDTO);
+    PageResult queryHistory(OrdersPageQueryDTO ordersPageQueryDTO);
 
     /**
      * 根据订单表主键查询订单详情
