@@ -59,13 +59,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
 
-        // 校验地址簿和购物车数据等是否为空
+        // 校验地址簿是否为空
         AddressBook addressBook = addressBookMapper.getById(ordersSubmitDTO.getAddressBookId());
         if (addressBook == null){
             // 地址不存在，抛出业务异常
             throw new OrderBusinessException(MessageConstant.ADDRESS_BOOK_IS_NULL);
         }
 
+        // 校验购物车是否为空
         List<ShoppingCart> shoppingCartList = shoppingCartMapper.list(ShoppingCart
                 .builder()
                 .userId(BaseContext.getCurrentId())
@@ -75,31 +76,53 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException(MessageConstant.SHOPPING_CART_IS_NULL);
         }
 
-        // 向订单表插入一条数据
+        // 构造订单主表数据
         Orders orders = new Orders();
         BeanUtils.copyProperties(ordersSubmitDTO, orders);
+
+        orders.setNumber(String.valueOf(System.currentTimeMillis()));
+        orders.setStatus(Orders.PENDING_PAYMENT);
+        orders.setUserId(BaseContext.getCurrentId());
         orders.setOrderTime(LocalDateTime.now());
         orders.setPayStatus(Orders.UN_PAID);
-        orders.setStatus(Orders.PENDING_PAYMENT);
-        orders.setNumber(String.valueOf(System.currentTimeMillis()));
-        // 添加补充冗余字段，做好订单快照，微信登录的小程序没有用户名字段，因此忽略
-        orders.setConsignee(addressBook.getConsignee());
+        // 实收总金额
+        BigDecimal totalMoney = new BigDecimal(0);
+        // 地址信息快照，微信登录的小程序没有用户名字段，因此忽略user_name字段
         orders.setPhone(addressBook.getPhone());
         orders.setAddress(addressBook.getProvinceName()+
                 addressBook.getCityName()+
                 addressBook.getDetail());
-        orders.setUserId(BaseContext.getCurrentId());
-        orderMapper.insert(orders);
+        orders.setConsignee(addressBook.getConsignee());
+        // todo 后台计算打包费和派送费
 
-        // 向订单明细表插入多条数据
+        // 构造订单明细表数据
         List<OrderDetail> odList = new ArrayList<>();
+        // 总餐具个数
+        Integer totalTablewareNumber = 0;
         for(ShoppingCart sc : shoppingCartList){
             OrderDetail orderDetail = new OrderDetail();
             BeanUtils.copyProperties(sc, orderDetail);
             // 上面orderMapper.insert(orders)会返回主键值
-            orderDetail.setOrderId(orders.getId());
+            orderDetail.setOrderId(Long.parseLong(orders.getNumber()));
             odList.add(orderDetail);
+            // 后台手动计算总金额
+            totalMoney = totalMoney.add(orderDetail.getAmount().multiply(new BigDecimal(orderDetail.getNumber())));
+            // 为餐具计算餐品的数量
+            totalTablewareNumber += sc.getNumber();
         }
+
+        // 设置实收总金额（打包费 6元/次 + 餐具费用 个/1元）
+        totalMoney = totalMoney.add(new BigDecimal(6));
+        if(ordersSubmitDTO.getTablewareStatus() == 0){
+            // 自定义餐具数量
+            totalMoney = totalMoney.add(new BigDecimal(ordersSubmitDTO.getTablewareNumber()));
+        } else {
+            totalMoney = totalMoney.add(new BigDecimal(totalTablewareNumber));
+        }
+        orders.setAmount(totalMoney);
+
+        // 插入订单表和订单明细表
+        orderMapper.insert(orders);
         orderDetailMapper.insertBatch(odList);
 
         // 清空购物车数据
