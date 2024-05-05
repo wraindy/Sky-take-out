@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         orderDetailMapper.insertBatch(odList);
 
         // 清空购物车数据
-        shoppingCartMapper.cleanAll(BaseContext.getCurrentId());
+        shoppingCartMapper.cleanAllByUserId(BaseContext.getCurrentId());
 
         // 返回VO
         return OrderSubmitVO

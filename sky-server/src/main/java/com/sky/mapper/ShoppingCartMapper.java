@@ -49,7 +49,7 @@ public interface ShoppingCartMapper {
      * @param userId
      */
     @Delete("delete from sky_take_out.shopping_cart where user_id = #{userId}")
-    void cleanAll(Long userId);
+    void cleanAllByUserId(Long userId);
 
     /**
      * 移除某个购物车的商品

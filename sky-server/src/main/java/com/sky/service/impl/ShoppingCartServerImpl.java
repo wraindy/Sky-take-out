@@ -101,7 +101,7 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
     @Override
     public void cleanAll() {
         Long userId = BaseContext.getCurrentId();
-        shoppingCartMapper.cleanAll(userId);
+        shoppingCartMapper.cleanAllByUserId(userId);
     }
 
     /**
