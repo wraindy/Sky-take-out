@@ -27,4 +27,12 @@ public interface OrderDetailMapper {
      */
     @Select("select * from order_detail where order_id = #{number}")
     List<OrderDetail> getByNumber(String number);
+
+    /**
+     * 查询构造dishString必要的字段
+     * @param number
+     * @return
+     */
+    @Select("select name, number from order_detail where order_id = #{number}")
+    List<OrderDetail> getDishStringItem(String number);
 }

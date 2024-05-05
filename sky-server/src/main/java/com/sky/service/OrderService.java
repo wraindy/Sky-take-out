@@ -58,4 +58,11 @@ public interface OrderService {
      * @return
      */
     OrderVO queryOrderDetail(Long id);
+
+    /**
+     * 动态查询订单搜索
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    PageResult queryByCondition(OrdersPageQueryDTO ordersPageQueryDTO);
 }

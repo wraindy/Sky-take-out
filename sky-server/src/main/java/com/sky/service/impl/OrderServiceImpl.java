@@ -260,4 +260,56 @@ public class OrderServiceImpl implements OrderService {
         orderVO.setOrderDetailList(orderDetailList);
         return orderVO;
     }
+
+    /**
+     * 动态查询订单
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult queryByCondition(OrdersPageQueryDTO ordersPageQueryDTO) {
+
+        // 分页查询订单主表
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        List<Orders> list = orderMapper.queryByCondition(ordersPageQueryDTO);
+
+        // 判断主表查询结果是否为空
+        if (list == null || list.isEmpty()){
+            return new PageResult(0, null);
+        }
+
+        // 填充dishString并转换成OrderVO集合
+        List<OrderVO> orderVOS = transferOrderVOList(list);
+
+        return new PageResult(orderVOS.size(), orderVOS);
+    }
+
+    /**
+     * 将List<Orders>转换成List<OrderVO>
+     * @param ordersList
+     * @return
+     */
+    private List<OrderVO> transferOrderVOList(List<Orders> ordersList){
+        List<OrderVO> orderVOList = new ArrayList<>();
+        for (Orders orders : ordersList){
+            List<OrderDetail> orderDetailList = orderDetailMapper.getDishStringItem(orders.getNumber());
+            String dishString = getDishString(orderDetailList);
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orders, orderVO);
+            orderVO.setOrderDishes(dishString);
+            orderVOList.add(orderVO);
+        }
+        return orderVOList;
+    }
+
+    /**
+     * 单个订单对应的订单详情集合，生成菜品字符串
+     * @param orderDetailList
+     * @return
+     */
+    private String getDishString(List<OrderDetail> orderDetailList){
+        List<String> collect = orderDetailList.stream().map(od -> od.getName() + '*' + od.getNumber()).collect(Collectors.toList());
+        return String.join(" ", collect);
+    }
+
 }
