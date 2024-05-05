@@ -82,7 +82,12 @@ public class OrderServiceImpl implements OrderService {
         orders.setPayStatus(Orders.UN_PAID);
         orders.setStatus(Orders.PENDING_PAYMENT);
         orders.setNumber(String.valueOf(System.currentTimeMillis()));
-        orders.setConsignee(orders.getConsignee());
+        // 添加补充冗余字段，做好订单快照，微信登录的小程序没有用户名字段，因此忽略
+        orders.setConsignee(addressBook.getConsignee());
+        orders.setPhone(addressBook.getPhone());
+        orders.setAddress(addressBook.getProvinceName()+
+                addressBook.getCityName()+
+                addressBook.getDetail());
         orders.setUserId(BaseContext.getCurrentId());
         orderMapper.insert(orders);
 
