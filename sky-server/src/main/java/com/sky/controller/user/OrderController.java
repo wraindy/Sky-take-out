@@ -39,7 +39,8 @@ public class OrderController {
     @ApiOperation("订单支付")
     public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) throws Exception {
         log.info("订单支付：{}", ordersPaymentDTO);
-        OrderPaymentVO orderPaymentVO = orderService.payment(ordersPaymentDTO);
+        // 正式调用微信支付只需要把payment2方法换成payment方法
+        OrderPaymentVO orderPaymentVO = orderService.payment2(ordersPaymentDTO);
         log.info("生成预支付交易单（默认微信支付了）：{}", orderPaymentVO);
         return Result.success(orderPaymentVO);
     }

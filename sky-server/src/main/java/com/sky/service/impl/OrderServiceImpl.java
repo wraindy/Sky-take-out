@@ -12,6 +12,7 @@ import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.List;
  * Notice
  **/
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -156,5 +158,29 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+    }
+
+    /**
+     * 订单支付（除去微信支付的版本）
+     * @param ordersPaymentDTO
+     * @return
+     * payment2与payment方法相比，直接修改订单数据，
+     * 然后删去了后端调用微信支付接口生成预支付交易单的功能，
+     * 接着直接向小程序返回调起支付所需的假的参数（https://pay.weixin.qq.com/docs/merchant/apis/mini-program-payment/mini-transfer-payment.html）
+     */
+    @Override
+    public OrderPaymentVO payment2(OrdersPaymentDTO ordersPaymentDTO) {
+        // 修改订单状态
+        this.paySuccess(ordersPaymentDTO.getOrderNumber());
+        log.info("\n已执行模拟微信支付-----");
+        // 返回假参数
+        return OrderPaymentVO
+                .builder()
+                .timeStamp("123456789")
+                .nonceStr("随机字符串")
+                .packageStr("prepay_id=123456789")
+                .paySign("签名：（appid+timeStamp+nonceStr+package）")
+                .signType("RSA")
+                .build();
     }
 }
