@@ -1,17 +1,21 @@
 package com.sky.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.*;
 import com.sky.exception.OrderBusinessException;
 import com.sky.mapper.*;
+import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author Wraindy
@@ -210,5 +215,36 @@ public class OrderServiceImpl implements OrderService {
                 .paySign("签名：（appid+timeStamp+nonceStr+package）")
                 .signType("RSA")
                 .build();
+    }
+
+    /**
+     * 用户查询自己的历史订单记录
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQueryOrders(OrdersPageQueryDTO ordersPageQueryDTO) {
+
+        // 设置用户id
+        ordersPageQueryDTO.setUserId(BaseContext.getCurrentId());
+
+        // 分页查询订单主表
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        List<Orders> list = orderMapper.queryByCondition(ordersPageQueryDTO);
+
+        // 判断主表查询结果是否为空
+        if (list == null || list.isEmpty()){
+            return new PageResult(0, null);
+        }
+
+        // 构造List<OrderVO>
+        List<OrderVO> orderVOList = list.stream().map(orders -> {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orders, orderVO);
+            orderVO.setOrderDetailList(orderDetailMapper.getByNumber(orders.getNumber()));
+            return orderVO;
+        }).collect(Collectors.toList());
+
+        return new PageResult(orderVOList.size(), orderVOList);
     }
 }

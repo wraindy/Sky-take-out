@@ -1,8 +1,11 @@
 package com.sky.mapper;
 
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @Author Wraindy
@@ -32,4 +35,11 @@ public interface OrderMapper {
      * id不是订单号，是orders表的自增主键；number才是订单号码
      */
     void update(Orders orders);
+
+    /**
+     * 条件分页查询
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    List<Orders> queryByCondition(OrdersPageQueryDTO ordersPageQueryDTO);
 }

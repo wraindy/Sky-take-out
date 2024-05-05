@@ -1,7 +1,9 @@
 package com.sky.service;
 
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.result.PageResult;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 
@@ -41,4 +43,11 @@ public interface OrderService {
      * 接着直接向小程序返回调起支付所需的假的参数（https://pay.weixin.qq.com/docs/merchant/apis/mini-program-payment/mini-transfer-payment.html）
      */
     OrderPaymentVO payment2(OrdersPaymentDTO ordersPaymentDTO);
+
+    /**
+     * 用户查询自己的历史订单记录
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    PageResult pageQueryOrders(OrdersPageQueryDTO ordersPageQueryDTO);
 }
