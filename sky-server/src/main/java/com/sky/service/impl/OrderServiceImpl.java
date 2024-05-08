@@ -13,9 +13,7 @@ import com.sky.mapper.*;
 import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
-import com.sky.vo.OrderPaymentVO;
-import com.sky.vo.OrderSubmitVO;
-import com.sky.vo.OrderVO;
+import com.sky.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -283,6 +283,34 @@ public class OrderServiceImpl implements OrderService {
 
         return new PageResult(orderVOS.size(), orderVOS);
     }
+
+    /**
+     * 各个状态的订单数量统计
+     *
+     * @return
+     */
+    @Override
+    public OrderStatisticsVO getStatistics() {
+
+        List<Integer> statusList = orderMapper.getStatistics();
+        if (statusList == null || statusList.isEmpty()){
+            // 没有订单就直接返回空数据
+            return new OrderStatisticsVO();
+        }
+
+        Map<Integer, Integer> statusCount = new HashMap<>();
+        for (Integer status : statusList) {
+            statusCount.put(status, statusCount.getOrDefault(status, 0) + 1);
+        }
+
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+        orderStatisticsVO.setToBeConfirmed(statusCount.getOrDefault(2, 0));
+        orderStatisticsVO.setConfirmed(statusCount.getOrDefault(3, 0));
+        orderStatisticsVO.setDeliveryInProgress(statusCount.getOrDefault(4, 0));
+
+        return orderStatisticsVO;
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>
