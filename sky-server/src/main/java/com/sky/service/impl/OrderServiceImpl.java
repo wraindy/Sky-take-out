@@ -304,9 +304,10 @@ public class OrderServiceImpl implements OrderService {
         }
 
         OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
-        orderStatisticsVO.setToBeConfirmed(statusCount.getOrDefault(2, 0));
-        orderStatisticsVO.setConfirmed(statusCount.getOrDefault(3, 0));
-        orderStatisticsVO.setDeliveryInProgress(statusCount.getOrDefault(4, 0));
+        // 待接单、待派送、派送中
+        orderStatisticsVO.setToBeConfirmed(statusCount.getOrDefault(Orders.TO_BE_CONFIRMED, 0));
+        orderStatisticsVO.setConfirmed(statusCount.getOrDefault(Orders.CONFIRMED, 0));
+        orderStatisticsVO.setDeliveryInProgress(statusCount.getOrDefault(Orders.DELIVERY_IN_PROGRESS, 0));
 
         return orderStatisticsVO;
     }
