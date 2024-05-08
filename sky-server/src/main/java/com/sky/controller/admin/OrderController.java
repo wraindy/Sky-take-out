@@ -4,17 +4,15 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
-import com.sky.vo.OrderOverViewVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @Author Wraindy
@@ -51,5 +49,15 @@ public class OrderController {
     public Result<OrderStatisticsVO> statistics(){
         OrderStatisticsVO orderStatisticsVO =  orderService.getStatistics();
         return Result.success(orderStatisticsVO);
+    }
+
+    @PutMapping("/confirm")
+    @ApiOperation("接单")
+    public Result confirm(@RequestBody Map<String, Long> data){
+        // 前端传json{id : xx}
+        // 要么构造dto用@RequestBody
+        // 要么使用map接收用@RequestBody
+        orderService.confirm(data.get("id"));
+        return Result.success();
     }
 }

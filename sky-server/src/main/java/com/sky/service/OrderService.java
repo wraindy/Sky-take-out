@@ -70,4 +70,9 @@ public interface OrderService {
      * @return
      */
     OrderStatisticsVO getStatistics();
+
+    /**
+     * 商家接单
+     */
+    void confirm(Long id);
 }

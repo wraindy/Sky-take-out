@@ -4,6 +4,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -57,4 +58,11 @@ public interface OrderMapper {
      */
     @Select("select status from orders")
     List<Integer> getStatistics();
+
+    /**
+     * 商家接单
+     * @param id
+     */
+    @Update("update orders set status = 3 where id = #{id}")
+    void confirm(Long id);
 }

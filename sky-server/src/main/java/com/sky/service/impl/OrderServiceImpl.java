@@ -311,6 +311,15 @@ public class OrderServiceImpl implements OrderService {
         return orderStatisticsVO;
     }
 
+    /**
+     * 商家接单
+     * @param id
+     */
+    @Override
+    public void confirm(Long id) {
+        orderMapper.confirm(id);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>
