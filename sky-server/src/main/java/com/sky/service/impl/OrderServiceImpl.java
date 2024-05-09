@@ -355,6 +355,48 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
     }
 
+    /**
+     * 商家取消订单
+     * 只有<待付款1><待派送3><派送中4><已完成5>才能取消订单
+     * 注意：<待派送3> === 数据库中orders表status字段的<已接单3>
+     * @param ordersCancelDTO
+     */
+    @Override
+    public void cancel(OrdersCancelDTO ordersCancelDTO) {
+        // 查询订单
+        Orders orders = orderMapper.getById(ordersCancelDTO.getId());
+
+        // 订单不存在
+        if (orders == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (orders.getStatus() == null ||
+                orders.getStatus().equals(Orders.TO_BE_CONFIRMED) ||
+                orders.getStatus().equals(Orders.CANCELLED)){
+            // todo Orders表中不知为何status字段有个<退款7>，暂时无视
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        // 如果付款了还要退款
+        if (Objects.equals(orders.getPayStatus(), Orders.PAID)) {
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    new BigDecimal(0.1),
+//                    new BigDecimal(0.1));
+//        }
+            log.info("模拟微信支付退款<商家取消订单>：{}", orders);
+            orders.setPayStatus(Orders.REFUND);
+        }
+
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelReason(ordersCancelDTO.getCancelReason());
+        orders.setCancelTime(LocalDateTime.now());
+
+        orderMapper.update(orders);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>
