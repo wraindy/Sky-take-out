@@ -318,7 +318,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 商家拒单
-     * 只有<待接单>的状态才能拒单
+     * 只有<待接单2>的状态才能拒单
      * @param ordersRejectionDTO
      */
     @Override
@@ -346,6 +346,7 @@ public class OrderServiceImpl implements OrderService {
 //                    new BigDecimal(0.1));
 //        }
             log.info("模拟微信支付退款<拒单操作>：{}", orders);
+            orders.setPayStatus(Orders.REFUND);
         }
 
         orders.setStatus(Orders.CANCELLED);

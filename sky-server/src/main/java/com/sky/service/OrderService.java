@@ -76,7 +76,7 @@ public interface OrderService {
 
     /**
      * 商家拒单
-     * 只有<待接单>的状态才能拒单
+     * 只有<待接单2>的状态才能拒单
      * @param ordersRejectionDTO
      */
     void rejection(OrdersRejectionDTO ordersRejectionDTO);
