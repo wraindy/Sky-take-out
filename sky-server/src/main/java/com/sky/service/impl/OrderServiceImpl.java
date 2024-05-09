@@ -437,6 +437,25 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
     }
 
+    /**
+     * 用户再来一单
+     * @param id
+     */
+    @Override
+    public void repetition(Long id) {
+        Long orderId = orderMapper.getNumberById(id);
+        List<OrderDetail> odList = orderDetailMapper.getByNumber(String.valueOf(orderId));
+        LocalDateTime now = LocalDateTime.now();
+        List<ShoppingCart> scList = odList.stream().map(od -> {
+            ShoppingCart sc = new ShoppingCart();
+            BeanUtils.copyProperties(od, sc);
+            sc.setCreateTime(now);
+            sc.setUserId(BaseContext.getCurrentId());
+            return sc;
+        }).collect(Collectors.toList());
+        shoppingCartMapper.insertBatch(scList);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>

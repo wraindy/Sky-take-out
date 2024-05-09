@@ -65,4 +65,12 @@ public interface OrderMapper {
      */
     @Update("update orders set status = 3 where id = #{id}")
     void confirm(Long id);
+
+    /**
+     * 根据主键获取订单id
+     * @param id
+     * @return
+     */
+    @Select("select orders.number from orders where id = #{id}")
+    Long getNumberById(Long id);
 }
