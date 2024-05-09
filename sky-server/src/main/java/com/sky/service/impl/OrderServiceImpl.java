@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersRejectionDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.OrderBusinessException;
 import com.sky.mapper.*;
@@ -336,12 +333,12 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // 如果不是<待接单2>状态，则无法拒单，响应订单状态错误
-        if (!Objects.equals(orders.getStatus(), Orders.PENDING_PAYMENT) && !Objects.equals(orders.getStatus(), Orders.TO_BE_CONFIRMED)){
+        if (!Objects.equals(orders.getStatus(), Orders.TO_BE_CONFIRMED)){
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
 
         // 如果付款了还要退款
-        if (orders.getStatus().equals(Orders.TO_BE_CONFIRMED) && Objects.equals(orders.getPayStatus(), Orders.PAID)) {
+        if (Objects.equals(orders.getPayStatus(), Orders.PAID)) {
 //            weChatPayUtil.refund(
 //                    orders.getNumber(),
 //                    orders.getNumber(),
