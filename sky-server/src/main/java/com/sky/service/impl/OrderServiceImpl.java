@@ -398,6 +398,45 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
     }
 
+    /**
+     * 用户取消订单
+     * 只有<待付款1><待接单2>状态才能取消订单
+     * @param id
+     */
+    @Override
+    public void userCancel(Long id) {
+        // 查询订单
+        Orders orders = orderMapper.getById(id);
+
+        // 订单不存在
+        if (orders == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (!Objects.equals(orders.getStatus(), Orders.PENDING_PAYMENT) &&
+                !orders.getStatus().equals(Orders.TO_BE_CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        // 如果付款了还要退款
+        if (Objects.equals(orders.getPayStatus(), Orders.PAID)) {
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    new BigDecimal(0.1),
+//                    new BigDecimal(0.1));
+//        }
+            log.info("模拟微信支付退款<商家取消订单>：{}", orders);
+            orders.setPayStatus(Orders.REFUND);
+        }
+
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelReason("<用户主动取消订单>");
+        orders.setCancelTime(LocalDateTime.now());
+
+        orderMapper.update(orders);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>

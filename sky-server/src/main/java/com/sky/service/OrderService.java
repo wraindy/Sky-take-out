@@ -88,4 +88,11 @@ public interface OrderService {
      * @param ordersCancelDTO
      */
     void cancel(OrdersCancelDTO ordersCancelDTO);
+
+    /**
+     * 用户取消订单
+     * 只有<待付款1><待接单2>状态才能取消订单
+     * @param id
+     */
+    void userCancel(Long id);
 }
