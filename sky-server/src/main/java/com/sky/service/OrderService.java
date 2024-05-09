@@ -2,6 +2,7 @@ package com.sky.service;
 
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
 import com.sky.vo.*;
@@ -75,4 +76,11 @@ public interface OrderService {
      * 商家接单
      */
     void confirm(Long id);
+
+    /**
+     * 商家拒单
+     * 只有<待接单>的状态才能拒单
+     * @param ordersRejectionDTO
+     */
+    void rejection(OrdersRejectionDTO ordersRejectionDTO);
 }

@@ -6,6 +6,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.*;
 import com.sky.exception.OrderBusinessException;
@@ -22,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -319,6 +317,45 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void confirm(Long id) {
         orderMapper.confirm(id);
+    }
+
+    /**
+     * 商家拒单
+     * 只有<待接单>的状态才能拒单
+     * @param ordersRejectionDTO
+     */
+    @Override
+    public void rejection(OrdersRejectionDTO ordersRejectionDTO) {
+
+        // 查询订单
+        Orders orders = orderMapper.getById(ordersRejectionDTO.getId());
+
+        // 订单不存在
+        if (orders == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 如果不是<待接单2>状态，则无法拒单，响应订单状态错误
+        if (!Objects.equals(orders.getStatus(), Orders.PENDING_PAYMENT) && !Objects.equals(orders.getStatus(), Orders.TO_BE_CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        // 如果付款了还要退款
+        if (orders.getStatus().equals(Orders.TO_BE_CONFIRMED) && Objects.equals(orders.getPayStatus(), Orders.PAID)) {
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    new BigDecimal(0.1),
+//                    new BigDecimal(0.1));
+//        }
+            log.info("模拟微信支付退款<拒单操作>：{}", orders);
+        }
+
+        orders.setStatus(Orders.CANCELLED);
+        orders.setRejectionReason(ordersRejectionDTO.getRejectionReason());
+        orders.setCancelTime(LocalDateTime.now());
+
+        orderMapper.update(orders);
     }
 
 
