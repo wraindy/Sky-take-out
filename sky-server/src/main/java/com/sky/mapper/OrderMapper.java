@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -73,4 +74,11 @@ public interface OrderMapper {
      */
     @Select("select orders.number from orders where id = #{id}")
     Long getNumberById(Long id);
+
+    /**
+     * 定时取消超时未支付订单
+     * @return
+     */
+    @Update("update orders set status = 6, cancel_time = now(), cancel_reason = '<用户超时未支付，自动取消订单>' where status = 1 and order_time < #{time}")
+    Integer autoCancelTimeoutOrder(LocalDateTime time);
 }
