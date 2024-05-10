@@ -101,4 +101,10 @@ public interface OrderService {
      * @param id
      */
     void repetition(Long id);
+
+    /**
+     * 商家派单
+     * @param id
+     */
+    void delivery(Long id);
 }

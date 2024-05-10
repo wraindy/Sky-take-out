@@ -456,6 +456,26 @@ public class OrderServiceImpl implements OrderService {
         shoppingCartMapper.insertBatch(scList);
     }
 
+    /**
+     * 商家派单
+     * @param id
+     */
+    @Override
+    public void delivery(Long id) {
+        Orders orders = orderMapper.getById(id);
+        // 订单不存在
+        if (orders == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (!Objects.equals(orders.getStatus(), Orders.CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orderMapper.update(orders);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>
