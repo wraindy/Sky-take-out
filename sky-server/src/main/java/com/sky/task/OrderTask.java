@@ -30,4 +30,15 @@ public class OrderTask {
         Integer result = orderMapper.autoCancelTimeoutOrder(time);
         log.info("定时处理超时未支付订单：{}", (result > 0? " <已取消" + result + "个订单> " : " <暂无超时订单> "));
     }
+
+    /**
+     * 处理一直处于<派送中4>状态的订单（前一天的）
+     * 每天凌晨1点执行一次
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void processUnfinishedOrder(){
+        LocalDateTime time = LocalDateTime.now().plusHours(-1);
+        Integer result = orderMapper.autoFinishOrder(time);
+        log.info("定时处理<派送中>的订单：{}", (result > 0? " <已完成" + result + "个订单> " : " <暂无派送中订单> "));
+    }
 }

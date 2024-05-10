@@ -81,4 +81,12 @@ public interface OrderMapper {
      */
     @Update("update orders set status = 6, cancel_time = now(), cancel_reason = '<用户超时未支付，自动取消订单>' where status = 1 and order_time < #{time}")
     Integer autoCancelTimeoutOrder(LocalDateTime time);
+
+    /**
+     * 定时完成订单
+     * @param time
+     * @return
+     */
+    @Update("update orders set status = 5 where status = 4 and order_time < #{time}")
+    Integer autoFinishOrder(LocalDateTime time);
 }
