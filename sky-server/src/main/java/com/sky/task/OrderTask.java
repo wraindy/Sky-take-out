@@ -23,6 +23,7 @@ public class OrderTask {
 
     /**
      * 处理超时未支付订单
+     * 每分钟执行一次
      */
     @Scheduled(cron = "0 * * * * ?")
     public void processTimeoutOrder(){
