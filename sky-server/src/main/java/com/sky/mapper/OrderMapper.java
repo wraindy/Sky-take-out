@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Wraindy
@@ -90,4 +91,11 @@ public interface OrderMapper {
      */
     @Update("update orders set status = 5 where status = 4 and order_time < #{time}")
     Integer autoFinishOrder(LocalDateTime time);
+
+    /**
+     * 根据map<起始时间，结束时间，状态>查询营业额
+     * @param map
+     * @return
+     */
+    Double sumByMap(Map<String, Object> map);
 }
