@@ -476,6 +476,22 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
     }
 
+    @Override
+    public void complete(Long id) {
+        Orders orders = orderMapper.getById(id);
+        // 订单不存在
+        if (orders == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (!Objects.equals(orders.getStatus(), Orders.DELIVERY_IN_PROGRESS)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        orders.setStatus(Orders.COMPLETED);
+        orderMapper.update(orders);
+    }
+
 
     /**
      * 将List<Orders>转换成List<OrderVO>
