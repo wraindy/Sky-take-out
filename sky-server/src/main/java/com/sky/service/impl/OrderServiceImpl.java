@@ -109,7 +109,8 @@ public class OrderServiceImpl implements OrderService {
             OrderDetail orderDetail = new OrderDetail();
             BeanUtils.copyProperties(sc, orderDetail);
             // 上面orderMapper.insert(orders)会返回主键值
-            orderDetail.setOrderId(Long.parseLong(orders.getNumber()));
+//            orderDetail.setOrderId(Long.parseLong(orders.getNumber()));
+
             odList.add(orderDetail);
 
             // 计算菜品费用（单价*数量）
@@ -126,6 +127,9 @@ public class OrderServiceImpl implements OrderService {
 
         // 插入订单表和订单明细表
         orderMapper.insert(orders);
+        for (OrderDetail od : odList){
+            od.setOrderId(orders.getId());
+        }
         orderDetailMapper.insertBatch(odList);
 
         // 清空购物车数据
@@ -248,7 +252,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderVO> orderVOList = list.stream().map(orders -> {
             OrderVO orderVO = new OrderVO();
             BeanUtils.copyProperties(orders, orderVO);
-            orderVO.setOrderDetailList(orderDetailMapper.getByNumber(orders.getNumber()));
+            orderVO.setOrderDetailList(orderDetailMapper.getByOrderId(orders.getId()));
             return orderVO;
         }).collect(Collectors.toList());
 
@@ -263,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderVO queryOrderDetail(Long id) {
         Orders orders = orderMapper.getById(id);
-        List<OrderDetail> orderDetailList = orderDetailMapper.getByNumber(orders.getNumber());
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(orders.getId());
         OrderVO orderVO = new OrderVO();
         BeanUtils.copyProperties(orders, orderVO);
         orderVO.setOrderDetailList(orderDetailList);
@@ -457,8 +461,8 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public void repetition(Long id) {
-        Long orderId = orderMapper.getNumberById(id);
-        List<OrderDetail> odList = orderDetailMapper.getByNumber(String.valueOf(orderId));
+//        Long orderId = orderMapper.getNumberById(id);
+        List<OrderDetail> odList = orderDetailMapper.getByOrderId(id);
         LocalDateTime now = LocalDateTime.now();
         List<ShoppingCart> scList = odList.stream().map(od -> {
             ShoppingCart sc = new ShoppingCart();
@@ -503,6 +507,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orders.setStatus(Orders.COMPLETED);
+        orders.setDeliveryTime(LocalDateTime.now());
         orderMapper.update(orders);
     }
 
@@ -538,7 +543,7 @@ public class OrderServiceImpl implements OrderService {
     private List<OrderVO> transferOrderVOList(List<Orders> ordersList){
         List<OrderVO> orderVOList = new ArrayList<>();
         for (Orders orders : ordersList){
-            List<OrderDetail> orderDetailList = orderDetailMapper.getDishStringItem(orders.getNumber());
+            List<OrderDetail> orderDetailList = orderDetailMapper.getDishStringItem(orders.getId());
             String dishString = getDishString(orderDetailList);
             OrderVO orderVO = new OrderVO();
             BeanUtils.copyProperties(orders, orderVO);

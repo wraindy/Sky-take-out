@@ -22,17 +22,17 @@ public interface OrderDetailMapper {
 
     /**
      * 根据订单号批量查询订单详情
-     * @param number
+     * @param orderId
      * @return
      */
-    @Select("select * from order_detail where order_id = #{number}")
-    List<OrderDetail> getByNumber(String number);
+    @Select("select * from order_detail where order_id = #{orderId}")
+    List<OrderDetail> getByOrderId(Long orderId);
 
     /**
      * 查询构造dishString必要的字段
-     * @param number
+     * @param orderId
      * @return
      */
-    @Select("select name, number from order_detail where order_id = #{number}")
-    List<OrderDetail> getDishStringItem(String number);
+    @Select("select name, number from order_detail where order_id = #{orderId}")
+    List<OrderDetail> getDishStringItem(Long orderId);
 }
