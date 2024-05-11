@@ -101,7 +101,7 @@ public interface OrderMapper {
     Double sumByMap(Map<String, Object> map);
 
     /**
-     * 根据map<起始时间，终点时间，订单状态>
+     * 根据map<起始时间，终点时间，订单状态>查询订单数
      * @param map
      * @return
      */
