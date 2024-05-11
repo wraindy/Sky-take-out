@@ -1,10 +1,13 @@
 package com.sky.service.impl;
 
+import com.sky.constant.StatusConstant;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.SetMealMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private SetMealMapper setMealMapper;
 
     /**
      * 查询今日运营数据
@@ -69,5 +75,16 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .orderCompletionRate(rate)
                 .validOrderCount(orderCount)
                 .build();
+    }
+
+    /**
+     * 查询套餐总览
+     * @return
+     */
+    @Override
+    public SetmealOverViewVO setmealOverView() {
+        Integer sold = setMealMapper.countByStatus(StatusConstant.ENABLE);
+        Integer discontinued = setMealMapper.countByStatus(StatusConstant.DISABLE);
+        return new SetmealOverViewVO(sold, discontinued);
     }
 }

@@ -77,4 +77,12 @@ public interface SetMealMapper {
      */
     @Select("select * from setmeal where category_id = #{categoryId} and status = 1")
     List<DishVO> getByCategoryId(Long categoryId);
+
+    /**
+     * 计算对应status的个数
+     * @param status
+     * @return
+     */
+    @Select("select count(id) from setmeal where status = #{status}")
+    Integer countByStatus(Integer status);
 }
