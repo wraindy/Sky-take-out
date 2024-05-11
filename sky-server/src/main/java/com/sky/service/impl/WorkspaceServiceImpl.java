@@ -55,20 +55,37 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         // 今日营业额
         Double turnover = orderMapper.sumByMap(map);
+        turnover = turnover == null ? 0.0 : turnover;
 
         // 今日新增用户数
         Integer userCount = userMapper.getUserCount(begin, end);
+        userCount = userCount == null ? 0 : userCount;
 
         // 有效订单数
         Integer orderCount = orderMapper.getOrderCountByMap(map);
+        orderCount = orderCount == null ? 0 : orderCount;
 
         // 平均客单价
-        Double average = turnover / orderCount;
+        Double average = null;
+        if (orderCount == 0) {
+            average = 0.0;
+        } else {
+            average = turnover / orderCount;
+        }
+
 
         // 订单完成率
         map.put("status", null);
         Integer totalOrderCount = orderMapper.getOrderCountByMap(map);
-        Double rate = orderCount / totalOrderCount.doubleValue();
+        if (totalOrderCount == null){
+            totalOrderCount = 0;
+        }
+        Double rate = null;
+        if (totalOrderCount == 0){
+            rate = 0.0;
+        } else {
+            rate = orderCount / totalOrderCount.doubleValue();
+        }
 
         return BusinessDataVO
                 .builder()
