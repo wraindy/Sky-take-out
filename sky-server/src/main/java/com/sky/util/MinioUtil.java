@@ -109,7 +109,9 @@ public class MinioUtil {
         } catch (Exception e){
             throw new MinioUtilException("获取url失败");
         }
-        return url;
+
+        // 去掉查询参数，确保链接永久可访问
+        return url.indexOf("?") == -1 ? url : url.substring(0, url.indexOf("?"));
     }
 
     /**
