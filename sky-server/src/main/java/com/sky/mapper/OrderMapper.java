@@ -1,5 +1,6 @@
 package com.sky.mapper;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
@@ -105,4 +106,12 @@ public interface OrderMapper {
      * @return
      */
     Integer getOrderCountByMap(Map<String, Object> map);
+
+    /**
+     * 联表查询获取前十热销菜品
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<GoodsSalesDTO> getTop10(LocalDateTime beginTime, LocalDateTime endTime);
 }
