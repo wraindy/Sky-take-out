@@ -107,4 +107,12 @@ public interface DishMapper {
      */
     @Select("select image, description from dish where id = #{dishId}")
     DishItemVO getDishItem(Long dishId);
+
+    /**
+     * 根据不同status计算总数
+     * @param status
+     * @return
+     */
+    @Select("select count(id) from dish where status = #{status}")
+    Integer countByStatus(Integer status);
 }
