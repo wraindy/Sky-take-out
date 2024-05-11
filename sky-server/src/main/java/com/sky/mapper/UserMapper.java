@@ -4,6 +4,8 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
+
 /**
  * @Author Wraindy
  * @DateTime 2024/04/27 22:59
@@ -34,4 +36,12 @@ public interface UserMapper {
      */
     @Select("select * from user where id = #{userId}")
     User getById(Long userId);
+
+    /**
+     * 获取某时间段之内的用户数
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    Integer getUserCount(LocalDateTime beginTime, LocalDateTime endTime);
 }
