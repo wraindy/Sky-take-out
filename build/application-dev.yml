@@ -1,0 +1,42 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: 
+    port: 
+    database: 
+    username: 
+    password: ""
+
+  minio:
+    endpoint:  #Minio服务所在地址+端口号
+    access-key: 填写自己的ak #访问的key
+    secret-key: "填写自己的sk" #访问的秘钥
+    bucket-name-dish:  #存储桶名称
+    expire-time: 5 # 预签名url的过期时间（分钟）
+
+  redis:
+    host: 
+    port: 
+    password: 
+    database: 0
+
+  wechat:
+    appid: ""
+    secret: ""
+    mchid: ""
+    mch-serial-no: ""
+    private-key-file-path: ""
+    api-v3-key: ""
+    we-chat-pay-cert-file-path: ""
+    notify-url: ""
+    refund-notify-url: ""
+
+spring:
+
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+
+server:
+  port: 8080
