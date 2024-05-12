@@ -43,7 +43,6 @@ public class ReportController {
             @DateTimeFormat(pattern = "yyyy-MM-dd")
             LocalDate end
     ){
-        // todo 参数校验
         log.info("营业额数据统计：{} -- {}", begin, end);
         TurnoverReportVO reportVO = reportService.turnoverStatistics(begin, end);
         return Result.success(reportVO);
@@ -57,7 +56,6 @@ public class ReportController {
             @DateTimeFormat(pattern = "yyyy-MM-dd")
             LocalDate end
     ){
-        // todo 参数校验
         log.info("用户数据统计：{} -- {}", begin, end);
         UserReportVO userReportVO = reportService.userStatistics(begin, end);
         return Result.success(userReportVO);
@@ -71,7 +69,6 @@ public class ReportController {
             @DateTimeFormat(pattern = "yyyy-MM-dd")
             LocalDate end
     ){
-        // todo 参数校验
         log.info("订单数据统计：{} -- {}", begin, end);
         OrderReportVO orderReportVO = reportService.ordersStatistics(begin, end);
         return Result.success(orderReportVO);

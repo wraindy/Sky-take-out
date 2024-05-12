@@ -120,7 +120,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .status(status)
                 .build();
 
-        // todo 防御性编程：参数校验：status只能是0或1；用户id必须存在
         employeeMapper.update(employee);
     }
 
@@ -140,7 +139,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void update(EmployeeDTO employeeDTO) {
 
-        // todo 防御性编程：修改的用户必须存在且修改的内容是合法的
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
         employeeMapper.update(employee);
@@ -152,8 +150,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void editPassword(PasswordEditDTO passwordEditDTO) {
-        // todo 参数校验
-//        Employee employee = employeeMapper.getById(passwordEditDTO.getEmpId());
+
         Employee employee = employeeMapper.getById(BaseContext.getCurrentId());
         if(employee == null){
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);

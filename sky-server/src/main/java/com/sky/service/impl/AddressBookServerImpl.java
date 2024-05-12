@@ -86,7 +86,6 @@ public class AddressBookServerImpl implements AddressBookServer {
      */
     @Override
     public void update(AddressBook addressBook) {
-        // todo 参数校验
         addressBookMapper.update(addressBook);
     }
 

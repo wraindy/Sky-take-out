@@ -61,7 +61,6 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
             // 数据库中不存在,则新增购物车信息
             if (shoppingCart.getSetmealId() == null){
                 // 当前要新增菜品信息
-                // todo 优化不必一次性查询这么多数据
                 Dish dish = dishMapper.getById(shoppingCart.getDishId());
                 shoppingCart.setName(dish.getName());
                 shoppingCart.setImage(dish.getImage());
@@ -76,7 +75,6 @@ public class ShoppingCartServerImpl implements ShoppingCartServer {
                 shoppingCart.setAmount(setmeal.getPrice());
             }
             // 通用操作移到外部
-            // todo 下文插入数据时，没有插入number，虽然数据库有默认值，考虑能否优化
             shoppingCart.setNumber(1);
             shoppingCart.setCreateTime(LocalDateTime.now());
 

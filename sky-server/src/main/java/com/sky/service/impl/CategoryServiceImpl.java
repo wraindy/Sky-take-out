@@ -73,8 +73,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(Long id) {
 
-        // todo 删除前先禁用
-
         // 查询当前分类是否关联的菜品，如果关联了就抛出业务异常
         Integer count = dishMapper.countByCategoryId(id);
         if (count > 0) {
@@ -111,7 +109,6 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void update(CategoryDTO categoryDTO) {
-        // todo 防御性编程，确保分类存在且可改
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
         categoryMapper.update(category);

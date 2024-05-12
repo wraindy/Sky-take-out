@@ -181,7 +181,6 @@ public class OrderServiceImpl implements OrderService {
     public void paySuccess(String outTradeNo) {
 
         // 根据订单号查询订单
-        // todo 订单号应融合用户信息，校验也是如此，这里默认订单号唯一了
         Orders ordersDB = orderMapper.getByNumber(outTradeNo);
 
         // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
@@ -393,7 +392,7 @@ public class OrderServiceImpl implements OrderService {
         if (orders.getStatus() == null ||
                 orders.getStatus().equals(Orders.TO_BE_CONFIRMED) ||
                 orders.getStatus().equals(Orders.CANCELLED)){
-            // todo Orders表中不知为何status字段有个<退款7>，暂时无视
+            // Orders表中不知为何status字段有个<退款7>，暂时无视
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
 

@@ -140,7 +140,6 @@ public class DishServiceImpl implements DishService {
      */
     @Override
     public void startOrStop(Integer status, Long id) {
-        // todo 项目逻辑漏洞：dish停售前先把关联的套餐关闭
         Dish dish = Dish
                 .builder()
                 .id(id)

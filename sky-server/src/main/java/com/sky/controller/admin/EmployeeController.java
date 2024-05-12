@@ -88,10 +88,10 @@ public class EmployeeController {
     @ApiOperation("新增员工")
     public Result save(@RequestBody EmployeeDTO employeeDTO){
 
-        // todo 防御性编程：参数校验
-//        log.info("新增员工：{}", employeeDTO);
+        log.info("新增员工：{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
+
     }
 
     /**
@@ -131,7 +131,6 @@ public class EmployeeController {
     @GetMapping("/{id}")
     @ApiOperation("根据id查询员工信息")
     public Result<Employee> getById(@PathVariable("id") Long id) {
-        // todo 防御性编程：用户可能不存在
         Employee employee = employeeService.getById(id);
         return Result.success(employee);
     }

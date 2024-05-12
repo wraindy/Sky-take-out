@@ -37,7 +37,6 @@ public class CommonController {
     @ApiOperation("文件上传")
     public Result<String> upload(@RequestParam("file") MultipartFile multipartFile){
 
-        // todo 文件名合法性校验（这里默认文件名正常"xxx.xxx"，格式是图片类型）、文件大小合法性校验
         String extName = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
         String objectName = UUID.randomUUID() + extName;
 
