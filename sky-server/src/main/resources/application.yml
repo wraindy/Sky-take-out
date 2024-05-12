@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${server.port}
 
 spring:
   profiles:
@@ -17,6 +17,11 @@ spring:
     port: ${sky.redis.port}
     password: ${sky.redis.password}
     database: ${sky.redis.database}
+
+  servlet:
+    multipart:
+      max-file-size: ${spring.servlet.multipart.max-file-size}      #单次上传大小
+      max-request-size: ${spring.servlet.multipart.max-file-size}  #总上传大小
 
 mybatis:
   #mapper配置文件
